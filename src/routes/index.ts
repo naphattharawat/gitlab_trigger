@@ -19,13 +19,13 @@ router.all('/', async (req: Request, res: Response) => {
         }
       }
       console.log(data);
-      
       res.send(data);
     } else {
       res.status(401);
       res.send({ error: '401' })
     }
   } catch (error) {
+    console.log(error);
     res.status(500);
     res.send({ error: error });
   }
