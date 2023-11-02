@@ -10,6 +10,7 @@ const router: Router = Router();
 
 router.all('/', async (req: Request, res: Response) => {
   try {
+    console.time('time')
     if (req.headers['x-gitlab-token'] == process.env.GITLAB_TOKEN) {
       const data = [];
       for (const url of Object.keys(process.env)) {
@@ -24,6 +25,7 @@ router.all('/', async (req: Request, res: Response) => {
       res.status(401);
       res.send({ error: '401' })
     }
+    console.timeEnd('time')
   } catch (error) {
     console.log(error);
     res.status(500);
