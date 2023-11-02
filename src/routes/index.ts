@@ -39,6 +39,8 @@ router.all('/one', async (req: Request, res: Response) => {
     console.time('time')
     if (req.headers['x-gitlab-token'] == process.env.GITLAB_TOKEN) {
       const data = [];
+      console.log(process.env[`${domain}_URL`]);
+      
       if (process.env[`${domain}_URL`]) {
         const rs = await requestModel.trigger(process.env[`${domain}_URL`], req.body, req.headers);
         console.log(rs);
