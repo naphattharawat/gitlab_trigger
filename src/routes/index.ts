@@ -15,8 +15,7 @@ router.all('/', async (req: Request, res: Response) => {
       const data = [];
       for (const url of Object.keys(process.env)) {
         if (url.match(/_URL/g)) {
-         requestModel.trigger(process.env[url], req.body, req.headers)
-          // data.push({ "name": url, "rs": rs });
+          requestModel.trigger(process.env[url], req.body, req.headers);
         }
       }
       // console.log(data);
@@ -33,5 +32,30 @@ router.all('/', async (req: Request, res: Response) => {
   }
 });
 
+
+router.all('/one', async (req: Request, res: Response) => {
+  try {
+    const domain = req.query.domain;
+    console.time('time')
+    if (req.headers['x-gitlab-token'] == process.env.GITLAB_TOKEN) {
+      const data = [];
+      if (process.env[`${domain}_URL`]) {
+        const rs = await requestModel.trigger(process.env[`${domain}_URL`], req.body, req.headers);
+        res.send(rs);
+      } else {
+        res.send({ error: 'no domain' });
+      }
+      // console.log(data);
+    } else {
+      res.status(401);
+      res.send({ error: '401' })
+    }
+    console.timeEnd('time')
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+    res.send({ error: error });
+  }
+});
 
 export default router;
