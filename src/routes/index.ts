@@ -15,12 +15,12 @@ router.all('/', async (req: Request, res: Response) => {
       const data = [];
       for (const url of Object.keys(process.env)) {
         if (url.match(/_URL/g)) {
-          const rs = await requestModel.trigger(process.env[url], req.body, req.headers)
-          data.push({ "name": url, "rs": rs });
+         requestModel.trigger(process.env[url], req.body, req.headers)
+          // data.push({ "name": url, "rs": rs });
         }
       }
-      console.log(data);
-      res.send(data);
+      // console.log(data);
+      res.send({ 'ok': true });
     } else {
       res.status(401);
       res.send({ error: '401' })
