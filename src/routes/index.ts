@@ -41,6 +41,7 @@ router.all('/one', async (req: Request, res: Response) => {
       const data = [];
       if (process.env[`${domain}_URL`]) {
         const rs = await requestModel.trigger(process.env[`${domain}_URL`], req.body, req.headers);
+        console.log(rs);
         res.send(rs);
       } else {
         res.send({ error: 'no domain' });
